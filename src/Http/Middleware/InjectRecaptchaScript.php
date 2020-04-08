@@ -80,6 +80,11 @@ class InjectRecaptchaScript
      */
     protected function injectScript(Response $response)
     {
+        // Only inject script for pages with the data-recaptcha
+        if (! $endHeadPosition = stripos($content = $response->content(), 'data-recaptcha')) {
+            return $response;
+        };
+        
         // To inject the script automatically, we will do it before the ending
         // head tag. If it's not found, the response may not be valid HTML,
         // so we will bail out returning the original untouched content.
